@@ -169,14 +169,6 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
             self.backgroundView.bottomAnchor.constraint(equalTo: window.bottomAnchor)
         ])
         
-        containerView.insertSubview(maskedView, aboveSubview: snapshotViewContainer)
-        NSLayoutConstraint.activate([
-            self.maskedView.topAnchor.constraint(equalTo: window.topAnchor),
-            self.maskedView.leftAnchor.constraint(equalTo: window.leftAnchor),
-            self.maskedView.rightAnchor.constraint(equalTo: window.rightAnchor),
-            self.maskedView.bottomAnchor.constraint(equalTo: window.bottomAnchor)
-        ])
-        
         let transformForSnapshotView = CGAffineTransform.identity
             .translatedBy(x: 0, y: -snapshotViewContainer.frame.origin.y)
             .translatedBy(x: 0, y: self.topSpace)
@@ -567,6 +559,10 @@ extension SPStorkPresentationController {
         if #available(iOS 11.0, *) {
             snapshotView?.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         }
+        self.maskedView.removeFromSuperview()
+        self.snapshotView!.addSubview(self.maskedView)
+        self.constraints(view: self.maskedView, to: self.snapshotView!)
+        
         self.gradeView.removeFromSuperview()
         self.gradeView.backgroundColor = UIColor.black
         self.snapshotView!.addSubview(self.gradeView)
