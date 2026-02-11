@@ -62,7 +62,7 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
         return (statusBarHeight < 25) ? 30 : statusBarHeight
     }
     
-    private let alpha: CGFloat =  0.51
+    var alpha: CGFloat =  0.51
     var cornerRadius: CGFloat = 10
     
     private var scaleForPresentingView: CGFloat {
