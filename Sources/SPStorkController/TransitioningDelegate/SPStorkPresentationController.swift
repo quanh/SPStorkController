@@ -47,6 +47,11 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
     private let snapshotViewContainer = UIView()
     private var snapshotView: UIView?
     private let backgroundView = UIView()
+    lazy private var maskedView: UIView = {
+        let view = UIView()
+        view.backgroundColor = self.maskBackgroundColor
+        return view
+    }()
     
     private var snapshotViewTopConstraint: NSLayoutConstraint?
     private var snapshotViewWidthConstraint: NSLayoutConstraint?
@@ -62,8 +67,9 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
         return (statusBarHeight < 25) ? 30 : statusBarHeight
     }
     
-    var alpha: CGFloat =  0.51
+    var maskBackgroundColor: UIColor = .black.withAlphaComponent(0.5)
     var cornerRadius: CGFloat = 10
+    private let alpha: CGFloat = 0.51
     
     private var scaleForPresentingView: CGFloat {
         guard let containerView = containerView else { return 0 }
@@ -163,6 +169,14 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
             self.backgroundView.bottomAnchor.constraint(equalTo: window.bottomAnchor)
         ])
         
+        containerView.insertSubview(maskedView, aboveSubview: snapshotViewContainer)
+        NSLayoutConstraint.activate([
+            self.maskedView.topAnchor.constraint(equalTo: window.topAnchor),
+            self.maskedView.leftAnchor.constraint(equalTo: window.leftAnchor),
+            self.maskedView.rightAnchor.constraint(equalTo: window.rightAnchor),
+            self.maskedView.bottomAnchor.constraint(equalTo: window.bottomAnchor)
+        ])
+        
         let transformForSnapshotView = CGAffineTransform.identity
             .translatedBy(x: 0, y: -snapshotViewContainer.frame.origin.y)
             .translatedBy(x: 0, y: self.topSpace)
@@ -185,6 +199,7 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
             guard let rootController = presentingViewController.presentingViewController, let snapshotView = rootController.view.snapshotView(afterScreenUpdates: false) else { return }
             
             containerView.insertSubview(snapshotView, aboveSubview: self.backgroundView)
+            
             snapshotView.frame = initialFrame
             snapshotView.transform = transformForSnapshotView
             snapshotView.alpha = 1 - self.alpha
@@ -313,6 +328,7 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
         guard let containerView = containerView else { return }
         
         self.backgroundView.removeFromSuperview()
+        self.maskedView.removeFromSuperview()
         self.snapshotView?.removeFromSuperview()
         self.snapshotViewContainer.removeFromSuperview()
         self.indicatorView.removeFromSuperview()
