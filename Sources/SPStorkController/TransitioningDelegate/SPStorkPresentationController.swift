@@ -69,7 +69,7 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
     
     var maskBackgroundColor: UIColor = .black.withAlphaComponent(0.5)
     var cornerRadius: CGFloat = 10
-    private let alpha: CGFloat = 0.51
+    var alpha: CGFloat = 0.51
     
     private var scaleForPresentingView: CGFloat {
         guard let containerView = containerView else { return 0 }

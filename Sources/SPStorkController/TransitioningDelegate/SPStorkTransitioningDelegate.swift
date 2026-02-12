@@ -33,6 +33,7 @@ public final class SPStorkTransitioningDelegate: NSObject, UIViewControllerTrans
     public var customHeight: CGFloat? = nil
     public var translateForDismiss: CGFloat = 200
     public var cornerRadius: CGFloat = 10
+    public var alpha: CGFloat = 0.51
     public var maskBackgroundColor: UIColor = .black.withAlphaComponent(0.5)
     public var hapticMoments: [SPStorkHapticMoments] = [.willDismissIfRelease]
     public weak var storkDelegate: SPStorkControllerDelegate? = nil
@@ -55,6 +56,7 @@ public final class SPStorkTransitioningDelegate: NSObject, UIViewControllerTrans
         controller.transitioningDelegate = self
         controller.storkDelegate = self.storkDelegate
         controller.confirmDelegate = self.confirmDelegate
+        controller.alpha = alpha
         return controller
     }
     
